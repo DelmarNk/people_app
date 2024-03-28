@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const People = require('../models/People')
 
 router.get('/', (req,res)=>{
     res.status(200).json({message: 'people index route'})
