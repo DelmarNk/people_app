@@ -2,20 +2,54 @@ const express = require('express')
 const router = express.Router()
 const People = require('../models/People')
 
-router.get('/', (req,res)=>{
-    res.status(200).json({message: 'people index route'})
+//index route
+router.get('/', async (req,res)=>{ 
+    try{
+        const people = await People.find({})  
+        res.status(200).json(people)                    
+    } catch(error){
+        res.status(400).json(error)
+    }
 })
-router.post('/', (req,res)=>{
-    res.status(201).json({message: 'people create route'})
+
+//create route
+router.post('/', async (req,res)=>{
+    try{
+        const person = await People.create(req.body)
+        res.status(201).json(person)
+    } catch(error){
+        res.status(400).json(error)
+    }
 })
-router.get('/:id', (req,res)=>{
-    res.status(200).json({message: `people show route ${req.params.id}`})
+
+//show route
+router.get('/:id', async (req,res)=>{
+    try{
+        const person = await People.findById(req.params.id)
+        res.status(200).json(person)
+    } catch(error){
+        res.status(400).json(error)
+    }
 })
-router.delete('/:id', (req,res)=>{
-    res.status(200).json({message: `people delete route ${req.params.id}`})
+
+//delete route
+router.delete('/:id', async (req,res)=>{
+    try{
+        const person = await People.findByIdAndDelete(req.params.id)
+        res.status(200).json(person)
+    } catch(error){
+        res.status(400).json(error)
+    }
 })
-router.put('/:id', (req,res)=>{
-    res.status(200).json({message: `people update route ${req.params.id}`})
+
+//update route
+router.put('/:id', async (req,res)=>{
+    try{
+        const person = await People.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        res.status(200).json(person)
+    } catch(error){
+        res.status(400).json(error)
+    }
 })
 
 

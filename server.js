@@ -10,6 +10,8 @@ if(process.env.NODE_ENV == "development"){
 }
 require('./db.connection')
 const PORT = process.env.PORT
+
+app.use(express.json())
 app.use(cors())
 app.use('/people', people_controller)
 

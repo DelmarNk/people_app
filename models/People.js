@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const {Schema, model} = mongoose
 const PeopleSchema = new Schema({
-    name: String,
+    name: {type: String, required: true},
     image: String,
     title: String
 }, {timestamps: true})
