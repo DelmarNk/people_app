@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const People = require('../models/People')
+const {requireToken, handleValidateOwner} = require('../middleware/auth')
 
 //index route
 router.get('/', async (req,res)=>{ 
@@ -13,7 +14,7 @@ router.get('/', async (req,res)=>{
 })
 
 //create route
-router.post('/', async (req,res)=>{
+router.post('/', requireToken, async (req,res)=>{ // we add requireToken to only allow the user to access the route if that user is logged in
     try{
         const person = await People.create(req.body)
         res.status(201).json(person)
@@ -35,22 +36,24 @@ router.get('/:id', async (req,res)=>{
 })
 
 //delete route
-router.delete('/:id', async (req,res)=>{
+router.delete('/:id', requireToken, async (req,res)=>{
     try{
+        handleValidateOwner(req, await People.findById(req.params.id))
         const person = await People.findByIdAndDelete(req.params.id)
         res.status(200).json(person)
     } catch(error){
-        res.status(400).json(error)
+        res.status(400).json(error.message)
     }
 })
 
 //update route
-router.put('/:id', async (req,res)=>{
+router.put('/:id', requireToken, async (req,res)=>{
     try{
+        handleValidateOwner(req, await People.findById(req.params.id))
         const person = await People.findByIdAndUpdate(req.params.id, req.body, {new: true})
-        res.status(200).json(person)
+        return res.status(200).json(person)
     } catch(error){
-        res.status(400).json(error)
+        res.status(400).json(error.message)
     }
 })
 

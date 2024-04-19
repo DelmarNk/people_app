@@ -23,7 +23,7 @@ router.post('/login', async (req,res)=>{
         const token = await createUserToken(req, foundUser)  //then use createUserToken to compapre the password and create a token
         res.status(200).json({user: foundUser, isLoggedIn: true, token})
     } catch(error){
-        res.status(400).json(error)
+        res.status(400).json(error.message)
     }
 })
 
