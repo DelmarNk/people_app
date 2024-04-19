@@ -26,6 +26,8 @@ router.post('/', async (req,res)=>{
 router.get('/:id', async (req,res)=>{
     try{
         const person = await People.findById(req.params.id)
+        .populate('user') //get the information inside the id
+        .exec() //to make .populate work
         res.status(200).json(person)
     } catch(error){
         res.status(400).json(error)
